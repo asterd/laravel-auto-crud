@@ -9,7 +9,8 @@ class RepositoryBuilder extends BaseBuilder
     public function create(array $modelData, bool $overwrite = false): string
     {
         return $this->fileService->createFromStub($modelData, 'repository', 'Repositories', 'Repository', $overwrite, function ($modelData) {
-            $model = $modelData['namespace'] ? 'App\\Models\\' . $modelData['namespace'] . '\\' . $modelData['modelName'] : 'App\\Models\\' . $modelData['modelName'];
+            // $model = $modelData['namespace'] ? 'App\\Models\\' . $modelData['namespace'] . '\\' . $modelData['modelName'] : 'App\\Models\\' . $modelData['modelName'];
+            $model = $this->getModelNamespace($modelData);
             return [
                 '{{ modelNamespace }}' => $model,
                 '{{ model }}' => $modelData['modelName'],

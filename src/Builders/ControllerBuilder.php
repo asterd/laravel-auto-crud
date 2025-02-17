@@ -8,10 +8,13 @@ use Mrmarchone\LaravelAutoCrud\Services\HelperService;
 
 class ControllerBuilder extends BaseBuilder
 {
+    use DynamicModelPathTrait;
+
     public function createAPI(array $modelData, string $resource, string $request, bool $overwrite = false): string
     {
         return $this->fileService->createFromStub($modelData, 'api.controller', 'Http/Controllers/API', 'Controller', $overwrite, function ($modelData) use ($resource, $request) {
-            $model = $modelData['namespace'] ? 'App\\Models\\' . $modelData['namespace'] . '\\' . $modelData['modelName'] : 'App\\Models\\' . $modelData['modelName'];
+            // $model = $modelData['namespace'] ? 'App\\Models\\' . $modelData['namespace'] . '\\' . $modelData['modelName'] : 'App\\Models\\' . $modelData['modelName'];
+            $model = $this->getModelNamespace($modelData);
             $resourceName = explode('\\', $resource);
             $requestName = explode('\\', $request);
 

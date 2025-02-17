@@ -36,6 +36,35 @@ Usage:
   auto-crud:generate [options]
 
 Options:
+  -M, --model[=MODEL]        Select one or more of your models. (multiple values allowed)
+  -T, --type[=TYPE]          Select whether api or web (default: api)
+  -R, --repository           Working with repository design pattern
+  -O, --overwrite            Overwrite existing files
+  -P, --pattern[=PATTERN]    Supports Spatie-Data Pattern
+  -C, --curl                 Generate CURL Requests for API
+  -PM, --postman             Generate Postman Collection for API
+  -MP, --models-path         Custom path for models directory
+  -MN, --models-namespace    Custom namespace for models
+  -F, --force               Skip all confirmations
+  -S, --skip-validation     Skip database validation
+  -NC, --no-confirmations   Skip all confirmations
+  -h, --help                Display help for the given command
+      --silent              Do not output any message
+  -q, --quiet               Only errors are displayed
+  -V, --version             Display this application version
+      --ansi|--no-ansi      Force (or disable --no-ansi) ANSI output
+  -n, --no-interaction      Do not ask any interactive question
+      --env[=ENV]           The environment the command should run under
+  -v|vv|vvv, --verbose      Increase the verbosity of messages
+
+```textmate
+Description:
+  A command to create auto CRUD for your models.
+
+Usage:
+  auto-crud:generate [options]
+
+Options:
   -M, --model[=MODEL]      Select one or more of your models. (multiple values allowed)
   -T, --type[=TYPE]        Select weather api or web.
   -R, --repository         Working with repository design pattern
@@ -56,7 +85,7 @@ Options:
 ### Example:
 
 ```bash
-php artisan auto-crud:generate --model=User --model=Manager --overwrite --type=api --repository --pattern=spatie-data --curl --postman
+php artisan auto-crud:generate --model=User --type=api --repository --models-path=app/Domain/Models --models-namespace=App\\Domain\\Models
 ```
 
 ![Views](images/command.png)

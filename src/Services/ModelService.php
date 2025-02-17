@@ -10,10 +10,29 @@ use function Laravel\Prompts\multiselect;
 
 class ModelService
 {
+    private static string $modelsPath;
+    private static string $modelsNamespace;
+
+    public static function initialize(string $path = null, string $namespace = null): void
+    {
+        self::$modelsPath = $path ?? app_path('Models');
+        self::$modelsNamespace = $namespace ?? 'App\\Models';
+    }
+
+    public static function getBaseNamespace(): string
+    {
+        return self::$modelsNamespace ?? 'App\\Models';
+    }
+
+    public static function getBasePath(): string
+    {
+        return self::$modelsPath ?? app_path('Models');
+    }
+
     public static function isModelExists(string $modelName): string|null
     {
-        return collect(File::allFiles(app_path('Models')))
-            ->map(fn($file) => str_replace(app_path('Models') . DIRECTORY_SEPARATOR, '', $file->getRealPath()))
+        return collect(File::allFiles(self::$modelsPath))
+            ->map(fn($file) => str_replace(self::$modelsPath . DIRECTORY_SEPARATOR, '', $file->getRealPath()))
             ->map(fn($file) => str_replace('.php', '', $file))
             ->map(fn($file) => str_replace(['/', '\\'], '/', $file))
             ->filter(function ($file) use ($modelName) {
@@ -26,12 +45,12 @@ class ModelService
 
     public static function showModels(): array
     {
-        $models = collect(File::allFiles(app_path('Models')))
-            ->map(fn($file) => str_replace(app_path('Models') . DIRECTORY_SEPARATOR, '', $file->getRealPath()))
+        $models = collect(File::allFiles(self::$modelsPath))
+            ->map(fn($file) => str_replace(self::$modelsPath . DIRECTORY_SEPARATOR, '', $file->getRealPath()))
             ->map(fn($file) => str_replace('.php', '', $file))
             ->map(fn($file) => str_replace(['/', '\\'], '/', $file))
             ->filter(function ($file) {
-                $model = 'App\\Models\\' . str_replace('/', '\\', $file);
+                $model = self::$modelsNamespace . '\\' . str_replace('/', '\\', $file);
                 $model = new $model();
                 return $model instanceof Model;
             })
@@ -55,9 +74,9 @@ class ModelService
     public static function getFullModelNamespace($modelData): string
     {
         if ($modelData['namespace']) {
-            $modelName = 'App\\Models\\' . $modelData['namespace'] . '\\' . $modelData['modelName'];
+            $modelName = self::$modelsNamespace . '\\' . $modelData['namespace'] . '\\' . $modelData['modelName'];
         } else {
-            $modelName = 'App\\Models\\' . $modelData['modelName'];
+            $modelName = self::$modelsNamespace . '\\' . $modelData['modelName'];
         }
 
         $model = new $modelName();
