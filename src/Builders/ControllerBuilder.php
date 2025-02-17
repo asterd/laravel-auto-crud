@@ -5,6 +5,7 @@ namespace Mrmarchone\LaravelAutoCrud\Builders;
 
 use Illuminate\Support\Str;
 use Mrmarchone\LaravelAutoCrud\Services\HelperService;
+use Mrmarchone\LaravelAutoCrud\Traits\DynamicModelPathTrait;
 
 class ControllerBuilder extends BaseBuilder
 {

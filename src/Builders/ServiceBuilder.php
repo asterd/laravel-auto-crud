@@ -3,9 +3,12 @@ declare(strict_types=1);
 
 namespace Mrmarchone\LaravelAutoCrud\Builders;
 
+use Mrmarchone\LaravelAutoCrud\Traits\DynamicModelPathTrait;
 
 class ServiceBuilder extends BaseBuilder
 {
+    use DynamicModelPathTrait;
+
     public function create(array $modelData, string $repository, bool $overwrite = false): string
     {
         return $this->fileService->createFromStub($modelData, 'service', 'Services', 'Service', $overwrite, function ($modelData) use ($repository) {
